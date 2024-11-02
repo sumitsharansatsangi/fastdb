@@ -1,0 +1,95 @@
+table ListString {
+  vals: [string];
+}
+
+table ListInt {
+  vals: [int];
+}
+
+table ListShort {
+  vals: [short];
+}
+
+table ListLong {
+  vals: [long];
+}
+
+table ListFloat {
+  vals: [float];
+}
+
+table ListDouble {
+  vals: [double];
+}
+
+table ListBool {
+  vals: [bool];
+}
+
+table ComplexObject {
+  name: string;
+  age: int;
+  salary: double;
+  is_active: bool;
+}
+
+table IntWrapper {
+  val: int;
+}
+
+table DoubleWrapper {
+  val: double;
+}
+
+table FloatWrapper {
+  val: float;
+}
+
+table BoolWrapper {
+  val: bool;
+}
+
+table StringWrapper {
+  val: string;
+}
+
+table ByteWrapper{
+  val:byte;
+}
+
+table LongWrapper{
+  val:long;
+}
+
+table ShortWrapper{
+  val:short;
+}
+union Any {
+  ListString: ListString,
+  ListInt: ListInt,
+  ListShort:ListShort,
+  ListLong:ListLong,
+  ListFloat:ListFloat,
+  ListDouble: ListDouble,
+  ListBool: ListBool,
+  ComplexObject: ComplexObject,
+  IntWrapper: IntWrapper,
+  DoubleWrapper: DoubleWrapper,
+  BoolWrapper: BoolWrapper,
+  StringWrapper: StringWrapper,
+  ByteWrapper:ByteWrapper,
+  LongWrapper:LongWrapper,
+  ShortWrapper:ShortWrapper,
+  FloatWrapper: FloatWrapper,
+}
+
+table KeyValue {  
+  key: string;
+  val: Any;
+}
+
+table KeyValueList{ 
+lists: [KeyValue];
+}
+
+root_type KeyValueList;
