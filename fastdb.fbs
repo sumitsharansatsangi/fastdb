@@ -1,41 +1,56 @@
 table ListString {
-  vals: [string];
+  val: [string];
 }
 
 table ListInt {
-  vals: [int];
+  val: [int];
+}
+
+table ListByte {
+  val: [byte];
 }
 
 table ListShort {
-  vals: [short];
+  val: [short];
 }
 
 table ListLong {
-  vals: [long];
+  val: [long];
 }
 
 table ListFloat {
-  vals: [float];
+  val: [float];
 }
 
 table ListDouble {
-  vals: [double];
+  val: [double];
 }
 
 table ListBool {
-  vals: [bool];
+  val: [bool];
 }
 
 table ComplexObject {
   name: string;
-  age: int;
-  salary: double;
+  age: int8;
+  salary: float;
   is_active: bool;
 }
 
 table IntWrapper {
   val: int;
 }
+
+
+table ShortWrapper {
+  val: short;
+}
+
+
+table LongWrapper {
+  val: long;
+}
+
 
 table DoubleWrapper {
   val: double;
@@ -57,13 +72,7 @@ table ByteWrapper{
   val:byte;
 }
 
-table LongWrapper{
-  val:long;
-}
 
-table ShortWrapper{
-  val:short;
-}
 union Any {
   ListString: ListString,
   ListInt: ListInt,
@@ -72,6 +81,7 @@ union Any {
   ListFloat:ListFloat,
   ListDouble: ListDouble,
   ListBool: ListBool,
+  ListByte:ListByte,
   ComplexObject: ComplexObject,
   IntWrapper: IntWrapper,
   DoubleWrapper: DoubleWrapper,

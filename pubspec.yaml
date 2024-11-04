@@ -13,8 +13,8 @@ dependencies:
     sdk: flutter
   path_provider:
     git: https://github.com/kumsumit/path_provider.git  
-  security_info:
-    git: https://github.com/sumitsharansatsangi/security_info.git
+  flutter_secure_storage:
+    git: https://github.com/kumsumit/flutter_secure_storage.git  
   encrypt: ^5.0.3  
 
 dev_dependencies:

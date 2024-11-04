@@ -1,87 +1,102 @@
-import 'package:fastdb/fastdb.dart';
+// import 'dart:typed_data';
+// import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
-import 'package:security_info/security_info.dart';
+import 'package:fastdb/fastdb.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FastDB.init();
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  MyAppState createState() => MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  int age = 0;
-  String name = "";
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () async => await SecurityInfo.generateSecureKey("fastdb_demo"));
-    Future.delayed(Duration.zero, () async => await SecurityInfo.savePin("985623"));
-    Future.delayed(Duration.zero, () async => await FastDB.init("fastdb_demo", "985623"));
-    Future.delayed(Duration.zero, () async => await FastDB.put("Name","Sumit Kumar"));
-    Future.delayed(Duration.zero, () async {
-      age = await FastDB.get("Age");
-    });
-    Future.delayed(Duration.zero, () async {
-      name =  await FastDB.get("Age");
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Text("Age is $age"),
-            Text("Name: $name")
-          ],
+    // final files = FastDB.getBytesList('files');
+    // final profilePic = FastDB.getBytes('profilePicture');
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('FastDB Example'),
+          centerTitle: true,
+        ),
+        body: Center(
+            child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // if (profilePic != null && profilePic.isNotEmpty)
+              //   Image.memory(Uint8List.fromList(profilePic)),
+              Text("Message: ${FastDB.getString('message') ?? 'No data'}"),
+              Text(
+                  "Username: ${FastDB.getString('username') ?? 'No Data'}"), // Output: john_doe
+              Text("Age: ${FastDB.getShort('age')}"), // Output: 30
+              Text("Height: ${FastDB.getFloat('height')}"), // Output: 5.9
+              Text("IsAdmin: ${FastDB.getBool('isAdmin')}"), // Output: true
+              Text(
+                  "Tags: ${FastDB.getListString('tags') ?? [].join(',')}"), // Output: [dart, flutter]
+              Text(
+                  "Scores: ${FastDB.getListShort('scores') ?? [].join(',')}"), // Output: [100, 95, 85]
+              Text(
+                  "Strike Rate: ${FastDB.getListFloat('strike_rate')}"), // Output: [36.6, 37.0, 36.8]
+              Text(
+                  "Attendence: ${FastDB.getListBool('attendence')}"), // Output: [true, false, true]
+              // if (files != null)
+              //   SizedBox(
+              //     width: MediaQuery.of(context).size.width,
+              //     child: Row(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //         for (final file in files)
+              //           Image.memory(Uint8List.fromList(file),
+              //               fit: BoxFit.contain,
+              //               width: (MediaQuery.of(context).size).width /
+              //                   files.length),
+              //       ],
+              //     ),
+              //   ),
+            ],
+          ),
+        )),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: writeData,
+          icon: Icon(Icons.add),
+          label: Text("Add Data"),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Future<void> writeData() async {
+    await FastDB.putString('message', 'Give FastDB A Try!! 🎸🤘');
+    await FastDB.putString('username', 'john_doe');
+    FastDB.putShort('age', 30);
+    FastDB.putFloat('height', 5.9);
+    FastDB.putBool('isAdmin', true);
+    // FastDB.setBytes('profilePicture',
+    //     (await rootBundle.load('assets/profile.jpeg')).buffer.asUint8List());
+    FastDB.putListString('tags', ['dart', 'flutter']);
+    FastDB.putListShort('scores', [100, 95, 85]);
+    FastDB.putListFloat('strike_rate', [36.6, 37.0, 36.8]);
+    FastDB.putListBool('attendence', [true, false, true]);
+    FastDB.flush();
+    // FastDB.setBytesList('files', [
+    //   (await rootBundle.load('assets/profile.jpeg')).buffer.asUint8List(),
+    //   (await rootBundle.load('assets/logo.jpeg')).buffer.asUint8List(),
+    //   (await rootBundle.load('assets/file1.jpeg')).buffer.asUint8List(),
+    //   (await rootBundle.load('assets/file2.jpeg')).buffer.asUint8List(),
+    // ]);
+    setState(() {});
   }
 }
