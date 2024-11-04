@@ -41,13 +41,13 @@ class MyAppState extends State<MyApp> {
               Text("Message: ${FastDB.getString('message') ?? 'No data'}"),
               Text(
                   "Username: ${FastDB.getString('username') ?? 'No Data'}"), // Output: john_doe
-              Text("Age: ${FastDB.getShort('age')}"), // Output: 30
+              Text("Age: ${FastDB.getByte('age')}"), // Output: 30
               Text("Height: ${FastDB.getFloat('height')}"), // Output: 5.9
               Text("IsAdmin: ${FastDB.getBool('isAdmin')}"), // Output: true
               Text(
                   "Tags: ${FastDB.getListString('tags') ?? [].join(',')}"), // Output: [dart, flutter]
               Text(
-                  "Scores: ${FastDB.getListShort('scores') ?? [].join(',')}"), // Output: [100, 95, 85]
+                  "Scores: ${FastDB.getListByte('scores') ?? [].join(',')}"), // Output: [100, 95, 85]
               Text(
                   "Strike Rate: ${FastDB.getListFloat('strike_rate')}"), // Output: [36.6, 37.0, 36.8]
               Text(
@@ -81,13 +81,13 @@ class MyAppState extends State<MyApp> {
   Future<void> writeData() async {
     await FastDB.putString('message', 'Give FastDB A Try!! 🎸🤘');
     await FastDB.putString('username', 'john_doe');
-    FastDB.putShort('age', 30);
+    FastDB.putByte('age', 30);
     FastDB.putFloat('height', 5.9);
     FastDB.putBool('isAdmin', true);
     // FastDB.setBytes('profilePicture',
     //     (await rootBundle.load('assets/profile.jpeg')).buffer.asUint8List());
     FastDB.putListString('tags', ['dart', 'flutter']);
-    FastDB.putListShort('scores', [100, 95, 85]);
+    FastDB.putListByte('scores', [100, 95, 85]);
     FastDB.putListFloat('strike_rate', [36.6, 37.0, 36.8]);
     FastDB.putListBool('attendence', [true, false, true]);
     FastDB.flush();

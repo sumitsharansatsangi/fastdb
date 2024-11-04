@@ -2,7 +2,10 @@ library;
 
 import 'dart:async';
 import 'dart:io';
+import 'package:archive/archive_io.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:path_provider/path_provider.dart';
 import 'fastdb_generated.dart' as db;
 
@@ -10,11 +13,24 @@ class FastDB {
   static final FastDB _instance = FastDB._internal();
   factory FastDB() => _instance;
   FastDB._internal();
+  static late final encrypt.Key _key;
+  static late final encrypt.IV _iv;
+  static const _ssKey = 'ss';
+  static const _svKey = 'sv';
+  static const _keyLength = 32;
+  static const _ivLength = 16;
 
   static List<db.KeyValueObjectBuilder> keyValueLists = [];
   static late File _file;
+  static late encrypt.Encrypter _encrypter;
 
   static Future<void> init() async {
+    const FlutterSecureStorage secureStorage = FlutterSecureStorage(
+        aOptions: AndroidOptions(
+            encryptedSharedPreferences: true, resetOnError: true));
+    await _initializeKeys(secureStorage);
+    _encrypter =
+        encrypt.Encrypter(encrypt.AES(_key, mode: encrypt.AESMode.cbc));
     final directory = await getApplicationSupportDirectory();
     _file = File('${directory.path}/fastDB.dat');
     if (await _file.exists()) {
@@ -24,11 +40,32 @@ class FastDB {
     }
   }
 
+  static Future<void> _initializeKeys(
+      FlutterSecureStorage secureStorage) async {
+    final encryptedSSData = await secureStorage.read(key: _ssKey);
+    final encryptedSVData = await secureStorage.read(key: _svKey);
+    if (encryptedSSData == null) {
+      _key = encrypt.Key.fromLength(_keyLength);
+      await secureStorage.write(key: _ssKey, value: _key.base64);
+    } else {
+      _key = encrypt.Key.fromBase64(encryptedSSData);
+    }
+    if (encryptedSVData == null) {
+      _iv = encrypt.IV.fromLength(_ivLength);
+      await secureStorage.write(key: _svKey, value: _iv.base64);
+    } else {
+      _iv = encrypt.IV.fromBase64(encryptedSVData);
+    }
+  }
+
   static Future<void> _decryptFile() async {
     try {
-      final bytes = await _file.readAsBytes();
+      final bytes = Inflate(await _file.readAsBytes()).getBytes();
       if (bytes.isNotEmpty) {
-        db.KeyValueList fastDB = db.KeyValueList(bytes);
+        final decrypted = _encrypter.decryptBytes(
+            encrypt.Encrypted(Uint8List.fromList(bytes)),
+            iv: _iv);
+        db.KeyValueList fastDB = db.KeyValueList(decrypted);
         for (var l in fastDB.lists!) {
           var valType = parseVal(l.val.val);
           keyValueLists.add(db.KeyValueObjectBuilder(
@@ -44,43 +81,72 @@ class FastDB {
 
   static ValType parseVal(Object val) {
     if (val is String) {
-      return ValType(db.AnyTypeId.StringWrapper, db.StringWrapperObjectBuilder(val: val));
-    }else if (val is int && val >= -128 && val <= 127) {
-      return ValType(db.AnyTypeId.ByteWrapper, db.ByteWrapperObjectBuilder(val: val));
-    }else if (val is int && val >= -32768 && val <= 32767) {
-      return ValType(db.AnyTypeId.ShortWrapper, db.ShortWrapperObjectBuilder(val: val));
-    }else if (val is int && val >= -2147483648 && val <= 2147483647) {
-      return ValType(db.AnyTypeId.IntWrapper, db.IntWrapperObjectBuilder(val: val));
-    }else if (val is int && val >= -9223372036854775808 && val <= 9223372036854775807){
-      return ValType(db.AnyTypeId.LongWrapper, db.LongWrapperObjectBuilder(val: val));
-    }else if (val is double && val >= -3.4028235e+38 && val <= 3.4028235e+38) {
-      return ValType(db.AnyTypeId.FloatWrapper ,db.FloatWrapperObjectBuilder(val: val));
-    }else if (val is double &&   val >= -1.7976931348623157e+308 && val <= 1.7976931348623157e+308) {
-      return ValType(db.AnyTypeId.DoubleWrapper, db.DoubleWrapperObjectBuilder(val: val));
+      return ValType(
+          db.AnyTypeId.StringWrapper, db.StringWrapperObjectBuilder(val: val));
+    } else if (val is int && val >= -128 && val <= 127) {
+      return ValType(
+          db.AnyTypeId.ByteWrapper, db.ByteWrapperObjectBuilder(val: val));
+    } else if (val is int && val >= -32768 && val <= 32767) {
+      return ValType(
+          db.AnyTypeId.ShortWrapper, db.ShortWrapperObjectBuilder(val: val));
+    } else if (val is int && val >= -2147483648 && val <= 2147483647) {
+      return ValType(
+          db.AnyTypeId.IntWrapper, db.IntWrapperObjectBuilder(val: val));
+    } else if (val is int &&
+        val >= -9223372036854775808 &&
+        val <= 9223372036854775807) {
+      return ValType(
+          db.AnyTypeId.LongWrapper, db.LongWrapperObjectBuilder(val: val));
+    } else if (val is double && val >= -3.4028235e+38 && val <= 3.4028235e+38) {
+      return ValType(
+          db.AnyTypeId.FloatWrapper, db.FloatWrapperObjectBuilder(val: val));
+    } else if (val is double &&
+        val >= -1.7976931348623157e+308 &&
+        val <= 1.7976931348623157e+308) {
+      return ValType(
+          db.AnyTypeId.DoubleWrapper, db.DoubleWrapperObjectBuilder(val: val));
     } else if (val is bool) {
-      return ValType(db.AnyTypeId.BoolWrapper, db.BoolWrapperObjectBuilder(val: val));
+      return ValType(
+          db.AnyTypeId.BoolWrapper, db.BoolWrapperObjectBuilder(val: val));
     } else if (val is List<String>) {
-      return ValType(db.AnyTypeId.ListString, db.ListStringObjectBuilder(val: val));
-    } else if (val is List<int> && val.every((value) => value >= -128 && value <= 127)) {
+      return ValType(
+          db.AnyTypeId.ListString, db.ListStringObjectBuilder(val: val));
+    } else if (val is List<int> &&
+        val.every((value) => value >= -128 && value <= 127)) {
       return ValType(db.AnyTypeId.ListByte, db.ListByteObjectBuilder(val: val));
-    } else if (val is List<int> && val.every((value) => value >= -32768 && value <= 32767)) {
-      return ValType(db.AnyTypeId.ListShort, db.ListShortObjectBuilder(val: val));
-    } else if (val is List<int> && val.every((value) => value >= -2147483648 && value <= 2147483647)) {
+    } else if (val is List<int> &&
+        val.every((value) => value >= -32768 && value <= 32767)) {
+      return ValType(
+          db.AnyTypeId.ListShort, db.ListShortObjectBuilder(val: val));
+    } else if (val is List<int> &&
+        val.every((value) => value >= -2147483648 && value <= 2147483647)) {
       return ValType(db.AnyTypeId.ListInt, db.ListIntObjectBuilder(val: val));
-    } else if (val is List<int> && val.every((value) => value >= -9223372036854775808 && value <= 9223372036854775807)) {
+    } else if (val is List<int> &&
+        val.every((value) =>
+            value >= -9223372036854775808 && value <= 9223372036854775807)) {
       return ValType(db.AnyTypeId.ListLong, db.ListLongObjectBuilder(val: val));
-    } else if (val is List<double> &&  val.every((value) => value >= -3.4028235e+38&& value <= 3.4028235e+38,) ) {
-      return ValType(db.AnyTypeId.ListFloat, db.ListFloatObjectBuilder(val: val));
-    } else if (val is List<double> && val.every((value) => value >= -1.7976931348623157e+308 && value <= 1.7976931348623157e+308)) {
-      return ValType(db.AnyTypeId.ListDouble, db.ListDoubleObjectBuilder(val: val));
+    } else if (val is List<double> &&
+        val.every(
+          (value) => value >= -3.4028235e+38 && value <= 3.4028235e+38,
+        )) {
+      return ValType(
+          db.AnyTypeId.ListFloat, db.ListFloatObjectBuilder(val: val));
+    } else if (val is List<double> &&
+        val.every((value) =>
+            value >= -1.7976931348623157e+308 &&
+            value <= 1.7976931348623157e+308)) {
+      return ValType(
+          db.AnyTypeId.ListDouble, db.ListDoubleObjectBuilder(val: val));
     } else if (val is List<bool>) {
       return ValType(db.AnyTypeId.ListBool, db.ListBoolObjectBuilder(val: val));
     } else if (val is db.ComplexObject) {
-      return ValType(db.AnyTypeId.ComplexObject, db.ComplexObjectObjectBuilder(
-          name: val.name,
-          age: val.age,
-          salary: val.salary,
-          isActive: val.isActive));
+      return ValType(
+          db.AnyTypeId.ComplexObject,
+          db.ComplexObjectObjectBuilder(
+              name: val.name,
+              age: val.age,
+              salary: val.salary,
+              isActive: val.isActive));
     } else {
       throw ArgumentError('Unsupported value type');
     }
@@ -302,7 +368,7 @@ class FastDB {
     }
   }
 
-   static Future<void> putByte(String key, int val) async {
+  static Future<void> putByte(String key, int val) async {
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -491,7 +557,10 @@ class FastDB {
       final originalBytes =
           db.KeyValueListObjectBuilder(lists: keyValueLists).toBytes();
       if (originalBytes.isNotEmpty) {
-        _file.writeAsBytes(originalBytes, flush: true);
+        _file.writeAsBytes(
+            Deflate(_encrypter.encryptBytes(originalBytes, iv: _iv).bytes)
+                .getBytes(),
+            flush: true);
       }
     });
   }
@@ -505,10 +574,9 @@ class FastDB {
   }
 }
 
-
-class ValType{
+class ValType {
   db.AnyTypeId typeId;
-  db.WrapperObjectBuilder wrapperObjectBuilder; 
+  db.WrapperObjectBuilder wrapperObjectBuilder;
 
   ValType(this.typeId, this.wrapperObjectBuilder);
 }

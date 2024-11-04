@@ -15,7 +15,8 @@ dependencies:
     git: https://github.com/kumsumit/path_provider.git  
   flutter_secure_storage:
     git: https://github.com/kumsumit/flutter_secure_storage.git  
-  encrypt: ^5.0.3  
+  encrypt: ^5.0.3
+  archive: ^3.6.1  
 
 dev_dependencies:
   flutter_test:

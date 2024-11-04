@@ -59,8 +59,8 @@ class AnyTypeId {
     14: ByteWrapper,
     15: LongWrapper,
     16: ShortWrapper,
-    17: FloatWrapper};
-
+    17: FloatWrapper
+  };
 
   static const fb.Reader<AnyTypeId> reader = _AnyTypeIdReader();
 
@@ -172,8 +172,11 @@ class ListIntObjectBuilder extends WrapperObjectBuilder {
   final List<int> _val;
 
   ListIntObjectBuilder({
-   required List<int> val,
-  }) : assert(val.every((value) => value >= -2147483648 && value <= 2147483647),"Not a valid list of int value"), _val = val;
+    required List<int> val,
+  })  : assert(
+            val.every((value) => value >= -2147483648 && value <= 2147483647),
+            "Not a valid list of int value"),
+        _val = val;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -205,7 +208,8 @@ class ListByte {
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  List<int>? get val => const fb.Int8ListReader().vTableGetNullable(_bc, _bcOffset, 4);
+  List<int>? get val =>
+      const fb.Int8ListReader().vTableGetNullable(_bc, _bcOffset, 4);
 
   @override
   String toString() {
@@ -217,8 +221,8 @@ class _ListByteReader extends fb.TableReader<ListByte> {
   const _ListByteReader();
 
   @override
-  ListByte createObject(fb.BufferContext bc, int offset) => 
-    ListByte._(bc, offset);
+  ListByte createObject(fb.BufferContext bc, int offset) =>
+      ListByte._(bc, offset);
 }
 
 class ListByteBuilder {
@@ -244,9 +248,10 @@ class ListByteObjectBuilder extends WrapperObjectBuilder {
   final List<int> _val;
 
   ListByteObjectBuilder({
-   required List<int> val,
-  })
-      : assert(val.every((value) => value >= -128 && value <= 127),"Not a vlaid list of bytes"), _val = val;
+    required List<int> val,
+  })  : assert(val.every((value) => value >= -128 && value <= 127),
+            "Not a vlaid list of bytes"),
+        _val = val;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -299,8 +304,10 @@ class ListShortObjectBuilder extends WrapperObjectBuilder {
   final List<int> _val;
 
   ListShortObjectBuilder({
-   required List<int> val,
-  }) : assert(val.every((value) => value >= -32768 && value <= 32767), "Not a valid list of Short Value"), _val = val;
+    required List<int> val,
+  })  : assert(val.every((value) => value >= -32768 && value <= 32767),
+            "Not a valid list of Short Value"),
+        _val = val;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -354,7 +361,11 @@ class ListLongObjectBuilder extends WrapperObjectBuilder {
 
   ListLongObjectBuilder({
     required List<int> val,
-  }) : assert(val.every((value) => value >= -9223372036854775808 && value <= 9223372036854775807), "Not a valid list of Long value"), _val = val;
+  })  : assert(
+            val.every((value) =>
+                value >= -9223372036854775808 && value <= 9223372036854775807),
+            "Not a valid list of Long value"),
+        _val = val;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -407,8 +418,12 @@ class ListFloatObjectBuilder extends WrapperObjectBuilder {
   final List<double> _val;
 
   ListFloatObjectBuilder({
-   required List<double> val,
-  }) : assert(val.every((value) => value >= -3.4028235e+38 && value <= 3.4028235e+38), "Not a valid list of Float Value"), _val = val;
+    required List<double> val,
+  })  : assert(
+            val.every(
+                (value) => value >= -3.4028235e+38 && value <= 3.4028235e+38),
+            "Not a valid list of Float Value"),
+        _val = val;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -462,7 +477,12 @@ class ListDoubleObjectBuilder extends WrapperObjectBuilder {
 
   ListDoubleObjectBuilder({
     required List<double> val,
-  }) : assert(val.every((value) => value >= -1.7976931348623157e+308 && value <= 1.7976931348623157e+308), "Not a valid list of Double Value"), _val = val;
+  })  : assert(
+            val.every((value) =>
+                value >= -1.7976931348623157e+308 &&
+                value <= 1.7976931348623157e+308),
+            "Not a valid list of Double Value"),
+        _val = val;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -909,7 +929,8 @@ class ByteWrapperObjectBuilder extends WrapperObjectBuilder {
 
   ByteWrapperObjectBuilder({
     required int val,
-  }) : assert(val >= -128 && val <= 127, 'Value out of range for Int8'), _val = val;
+  })  : assert(val >= -128 && val <= 127, 'Value out of range for Int8'),
+        _val = val;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -1052,25 +1073,43 @@ class KeyValue {
   AnyTypeId? get valType => AnyTypeId._createOrNull(
       const fb.Uint8Reader().vTableGetNullable(_bc, _bcOffset, 6));
   dynamic get val {
-     switch (valType?.value) {
-      case 1: return ListString.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 2: return ListInt.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 3: return ListShort.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 4: return ListLong.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 5: return ListFloat.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 6: return ListDouble.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 7: return ListBool.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 8: return ListByte.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 9: return ComplexObject.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 10: return IntWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 11: return DoubleWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 12: return BoolWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 13: return StringWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 14: return ByteWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 15: return LongWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 16: return ShortWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 17: return FloatWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      default: return null;
+    switch (valType?.value) {
+      case 1:
+        return ListString.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 2:
+        return ListInt.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 3:
+        return ListShort.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 4:
+        return ListLong.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 5:
+        return ListFloat.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 6:
+        return ListDouble.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 7:
+        return ListBool.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 8:
+        return ListByte.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 9:
+        return ComplexObject.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 10:
+        return IntWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 11:
+        return DoubleWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 12:
+        return BoolWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 13:
+        return StringWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 14:
+        return ByteWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 15:
+        return LongWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 16:
+        return ShortWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 17:
+        return FloatWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      default:
+        return null;
     }
   }
 
