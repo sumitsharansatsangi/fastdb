@@ -83,15 +83,29 @@ class FastDB {
     if (val is String) {
       return ValType(
           db.AnyTypeId.StringWrapper, db.StringWrapperObjectBuilder(val: val));
+    } else if (val is int && val >= 0 && val <= 255) {
+      return ValType(db.AnyTypeId.PositiveByteWrapper,
+          db.PositiveByteWrapperObjectBuilder(val: val));
     } else if (val is int && val >= -128 && val <= 127) {
       return ValType(
           db.AnyTypeId.ByteWrapper, db.ByteWrapperObjectBuilder(val: val));
+    } else if (val is int && val >= 0 && val <= 65535) {
+      return ValType(db.AnyTypeId.PositiveShortWrapper,
+          db.PositiveShortWrapperObjectBuilder(val: val));
     } else if (val is int && val >= -32768 && val <= 32767) {
       return ValType(
           db.AnyTypeId.ShortWrapper, db.ShortWrapperObjectBuilder(val: val));
+    } else if (val is int && val >= 0 && val <= 4294967295) {
+      return ValType(
+          db.AnyTypeId.PositiveIntWrapper, db.PositiveIntWrapperObjectBuilder(val: val));
     } else if (val is int && val >= -2147483648 && val <= 2147483647) {
       return ValType(
           db.AnyTypeId.IntWrapper, db.IntWrapperObjectBuilder(val: val));
+    } else if (val is int &&
+        val >= 0 &&
+        val <=9223372036854775807) {
+      return ValType(
+          db.AnyTypeId.PositiveLongWrapper, db.PositiveLongWrapperObjectBuilder(val: val));
     } else if (val is int &&
         val >= -9223372036854775808 &&
         val <= 9223372036854775807) {
@@ -112,16 +126,33 @@ class FastDB {
       return ValType(
           db.AnyTypeId.ListString, db.ListStringObjectBuilder(val: val));
     } else if (val is List<int> &&
+        val.every((value) => value >= 0 && value <= 255)) {
+      return ValType(db.AnyTypeId.ListPositiveByte, db.ListPositiveByteObjectBuilder(val: val));
+    } 
+    else if (val is List<int> &&
         val.every((value) => value >= -128 && value <= 127)) {
       return ValType(db.AnyTypeId.ListByte, db.ListByteObjectBuilder(val: val));
+    } else if (val is List<int> &&
+        val.every((value) => value >= 0 && value <= 65535)) {
+      return ValType(
+          db.AnyTypeId.ListPositiveShort, db.ListPositiveShortObjectBuilder(val: val));
     } else if (val is List<int> &&
         val.every((value) => value >= -32768 && value <= 32767)) {
       return ValType(
           db.AnyTypeId.ListShort, db.ListShortObjectBuilder(val: val));
-    } else if (val is List<int> &&
+    }else if (val is List<int> &&
+        val.every((value) => value >= 0 && value <= 4294967295)) {
+      return ValType(db.AnyTypeId.ListPositiveInt, db.ListPositiveIntObjectBuilder(val: val));
+    }
+     else if (val is List<int> &&
         val.every((value) => value >= -2147483648 && value <= 2147483647)) {
       return ValType(db.AnyTypeId.ListInt, db.ListIntObjectBuilder(val: val));
     } else if (val is List<int> &&
+        val.every((value) =>
+            value >= 0 && value <= 9223372036854775807)) {
+      return ValType(db.AnyTypeId.ListPositiveLong, db.ListPositiveLongObjectBuilder(val: val));
+    }
+     else if (val is List<int> &&
         val.every((value) =>
             value >= -9223372036854775808 && value <= 9223372036854775807)) {
       return ValType(db.AnyTypeId.ListLong, db.ListLongObjectBuilder(val: val));
@@ -188,6 +219,24 @@ class FastDB {
     return null;
   }
 
+  static int? getPositiveInt(String key) {
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        return db.PositiveIntWrapper(k.val.toBytes()).val;
+      }
+    }
+    return null;
+  }
+
+  static List<int>? getPositiveListInt(String key) {
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        return db.ListPositiveInt(k.val.toBytes()).val;
+      }
+    }
+    return null;
+  }
+
   static int? getByte(String key) {
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -201,6 +250,24 @@ class FastDB {
     for (final k in keyValueLists) {
       if (k.key == key) {
         return db.ListByte(k.val.toBytes()).val;
+      }
+    }
+    return null;
+  }
+
+  static int? getPositiveByte(String key) {
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        return db.PositiveByteWrapper(k.val.toBytes()).val;
+      }
+    }
+    return null;
+  }
+
+  static List<int>? getPositiveListByte(String key) {
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        return db.ListPositiveByte(k.val.toBytes()).val;
       }
     }
     return null;
@@ -224,6 +291,25 @@ class FastDB {
     return null;
   }
 
+   static int? getPositiveShort(String key) {
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        return db.PositiveShortWrapper(k.val.toBytes()).val;
+      }
+    }
+    return null;
+  }
+
+  static List<int>? getPositiveListShort(String key) {
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        return db.ListPositiveShort(k.val.toBytes()).val;
+      }
+    }
+    return null;
+  }
+
+
   static int? getLong(String key) {
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -241,6 +327,25 @@ class FastDB {
     }
     return null;
   }
+
+   static int? getPositiveLong(String key) {
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        return db.PositiveLongWrapper(k.val.toBytes()).val;
+      }
+    }
+    return null;
+  }
+
+  static List<int>? getPositiveListLong(String key) {
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        return db.ListPositiveLong(k.val.toBytes()).val;
+      }
+    }
+    return null;
+  }
+
 
   static double? getFloat(String key) {
     for (final k in keyValueLists) {
@@ -368,6 +473,43 @@ class FastDB {
     }
   }
 
+   static Future<void> putPositiveInt(String key, int val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.PositiveIntWrapperObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.PositiveIntWrapper;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.PositiveIntWrapperObjectBuilder(val: val),
+          valType: db.AnyTypeId.PositiveIntWrapper));
+    }
+  }
+
+  static Future<void> putPositiveListInt(String key, List<int> val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.ListPositiveIntObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.ListPositiveInt;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.ListPositiveIntObjectBuilder(val: val),
+          valType: db.AnyTypeId.ListPositiveInt));
+    }
+  }
+
+
   static Future<void> putByte(String key, int val) async {
     bool flag = true;
     for (final k in keyValueLists) {
@@ -404,6 +546,43 @@ class FastDB {
     }
   }
 
+   static Future<void> putPositiveByte(String key, int val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.PositiveByteWrapperObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.PositiveByteWrapper;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.PositiveByteWrapperObjectBuilder(val: val),
+          valType: db.AnyTypeId.PositiveByteWrapper));
+    }
+  }
+
+  static Future<void> putPositiveListByte(String key, List<int> val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.ListPositiveByteObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.ListPositiveByte;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.ListPositiveByteObjectBuilder(val: val),
+          valType: db.AnyTypeId.ListPositiveByte));
+    }
+  }
+
+
   static Future<void> putShort(String key, int val) async {
     bool flag = true;
     for (final k in keyValueLists) {
@@ -439,6 +618,43 @@ class FastDB {
           valType: db.AnyTypeId.ListShort));
     }
   }
+
+   static Future<void> putPositiveShort(String key, int val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.PositiveShortWrapperObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.PositiveShortWrapper;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.PositiveShortWrapperObjectBuilder(val: val),
+          valType: db.AnyTypeId.PositiveShortWrapper));
+    }
+  }
+
+  static Future<void> putPositiveListShort(String key, List<int> val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.ListPositiveShortObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.ListPositiveShort;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.ListPositiveShortObjectBuilder(val: val),
+          valType: db.AnyTypeId.ListPositiveShort));
+    }
+  }
+
 
   static Future<void> putDouble(String key, double val) async {
     bool flag = true;

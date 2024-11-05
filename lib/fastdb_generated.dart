@@ -16,50 +16,66 @@ class AnyTypeId {
     return result;
   }
 
-  static AnyTypeId? _createOrNull(int? value) =>
+   static AnyTypeId? _createOrNull(int? value) => 
       value == null ? null : AnyTypeId.fromValue(value);
 
   static const int minValue = 0;
-  static const int maxValue = 17;
+  static const int maxValue = 25;
   static bool containsValue(int value) => values.containsKey(value);
 
   static const AnyTypeId NONE = AnyTypeId._(0);
   static const AnyTypeId ListString = AnyTypeId._(1);
   static const AnyTypeId ListInt = AnyTypeId._(2);
-  static const AnyTypeId ListShort = AnyTypeId._(3);
-  static const AnyTypeId ListLong = AnyTypeId._(4);
-  static const AnyTypeId ListFloat = AnyTypeId._(5);
-  static const AnyTypeId ListDouble = AnyTypeId._(6);
-  static const AnyTypeId ListBool = AnyTypeId._(7);
-  static const AnyTypeId ListByte = AnyTypeId._(8);
-  static const AnyTypeId ComplexObject = AnyTypeId._(9);
-  static const AnyTypeId IntWrapper = AnyTypeId._(10);
-  static const AnyTypeId DoubleWrapper = AnyTypeId._(11);
-  static const AnyTypeId BoolWrapper = AnyTypeId._(12);
-  static const AnyTypeId StringWrapper = AnyTypeId._(13);
-  static const AnyTypeId ByteWrapper = AnyTypeId._(14);
-  static const AnyTypeId LongWrapper = AnyTypeId._(15);
-  static const AnyTypeId ShortWrapper = AnyTypeId._(16);
-  static const AnyTypeId FloatWrapper = AnyTypeId._(17);
+  static const AnyTypeId ListPositiveInt = AnyTypeId._(3);
+  static const AnyTypeId ListByte = AnyTypeId._(4);
+  static const AnyTypeId ListPositiveByte = AnyTypeId._(5);
+  static const AnyTypeId ListShort = AnyTypeId._(6);
+  static const AnyTypeId ListPositiveShort = AnyTypeId._(7);
+  static const AnyTypeId ListLong = AnyTypeId._(8);
+  static const AnyTypeId ListPositiveLong = AnyTypeId._(9);
+  static const AnyTypeId ListFloat = AnyTypeId._(10);
+  static const AnyTypeId ListDouble = AnyTypeId._(11);
+  static const AnyTypeId ListBool = AnyTypeId._(12);
+  static const AnyTypeId ComplexObject = AnyTypeId._(13);
+  static const AnyTypeId StringWrapper = AnyTypeId._(14);
+  static const AnyTypeId IntWrapper = AnyTypeId._(15);
+  static const AnyTypeId PositiveIntWrapper = AnyTypeId._(16);
+  static const AnyTypeId ByteWrapper = AnyTypeId._(17);
+  static const AnyTypeId PositiveByteWrapper = AnyTypeId._(18);
+  static const AnyTypeId ShortWrapper = AnyTypeId._(19);
+  static const AnyTypeId PositiveShortWrapper = AnyTypeId._(20);
+  static const AnyTypeId LongWrapper = AnyTypeId._(21);
+  static const AnyTypeId PositiveLongWrapper = AnyTypeId._(22);
+  static const AnyTypeId FloatWrapper = AnyTypeId._(23);
+  static const AnyTypeId DoubleWrapper = AnyTypeId._(24);
+  static const AnyTypeId BoolWrapper = AnyTypeId._(25);
   static const Map<int, AnyTypeId> values = {
     0: NONE,
     1: ListString,
     2: ListInt,
-    3: ListShort,
-    4: ListLong,
-    5: ListFloat,
-    6: ListDouble,
-    7: ListBool,
-    8: ListByte,
-    9: ComplexObject,
-    10: IntWrapper,
-    11: DoubleWrapper,
-    12: BoolWrapper,
-    13: StringWrapper,
-    14: ByteWrapper,
-    15: LongWrapper,
-    16: ShortWrapper,
-    17: FloatWrapper
+    3: ListPositiveInt,
+    4: ListByte,
+    5: ListPositiveByte,
+    6: ListShort,
+    7: ListPositiveShort,
+    8: ListLong,
+    9: ListPositiveLong,
+    10: ListFloat,
+    11: ListDouble,
+    12: ListBool,
+    13: ComplexObject,
+    14: StringWrapper,
+    15: IntWrapper,
+    16: PositiveIntWrapper,
+    17: ByteWrapper,
+    18: PositiveByteWrapper,
+    19: ShortWrapper,
+    20: PositiveShortWrapper,
+    21: LongWrapper,
+    22: PositiveLongWrapper,
+    23: FloatWrapper,
+    24: DoubleWrapper,
+    25: BoolWrapper
   };
 
   static const fb.Reader<AnyTypeId> reader = _AnyTypeIdReader();
@@ -196,6 +212,62 @@ class ListIntObjectBuilder extends WrapperObjectBuilder {
   }
 }
 
+class ListPositiveInt {
+  ListPositiveInt._(this._bc, this._bcOffset);
+  factory ListPositiveInt(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<ListPositiveInt> reader = _ListPositiveIntReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  List<int>? get val => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 4);
+
+  @override
+  String toString() {
+    return 'ListPositiveInt{val: $val}';
+  }
+}
+
+class _ListPositiveIntReader extends fb.TableReader<ListPositiveInt> {
+  const _ListPositiveIntReader();
+
+  @override
+  ListPositiveInt createObject(fb.BufferContext bc, int offset) => 
+    ListPositiveInt._(bc, offset);
+}
+
+
+class ListPositiveIntObjectBuilder extends WrapperObjectBuilder {
+  final List<int>? _val;
+
+  ListPositiveIntObjectBuilder({
+    List<int>? val,
+  })
+      : _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    final int? valOffset = _val == null ? null
+        : fbBuilder.writeListUint32(_val);
+    fbBuilder.startTable(1);
+    fbBuilder.addOffset(0, valOffset);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
 class ListByte {
   ListByte._(this._bc, this._bcOffset);
   factory ListByte(List<int> bytes) {
@@ -271,6 +343,63 @@ class ListByteObjectBuilder extends WrapperObjectBuilder {
   }
 }
 
+
+class ListPositiveByte {
+  ListPositiveByte._(this._bc, this._bcOffset);
+  factory ListPositiveByte(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<ListPositiveByte> reader = _ListPositiveByteReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  List<int>? get val => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 4);
+
+  @override
+  String toString() {
+    return 'ListPositiveByte{val: $val}';
+  }
+}
+
+class _ListPositiveByteReader extends fb.TableReader<ListPositiveByte> {
+  const _ListPositiveByteReader();
+
+  @override
+  ListPositiveByte createObject(fb.BufferContext bc, int offset) => 
+    ListPositiveByte._(bc, offset);
+}
+
+
+class ListPositiveByteObjectBuilder extends WrapperObjectBuilder {
+  final List<int>? _val;
+
+  ListPositiveByteObjectBuilder({
+    List<int>? val,
+  })
+      : _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    final int? valOffset = _val == null ? null
+        : fbBuilder.writeListUint8(_val);
+    fbBuilder.startTable(1);
+    fbBuilder.addOffset(0, valOffset);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
 class ListShort {
   ListShort._(this._bc, this._bcOffset);
   factory ListShort(List<int> bytes) {
@@ -313,6 +442,63 @@ class ListShortObjectBuilder extends WrapperObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     final int valOffset = fbBuilder.writeListInt16(_val);
+    fbBuilder.startTable(1);
+    fbBuilder.addOffset(0, valOffset);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
+
+class ListPositiveShort {
+  ListPositiveShort._(this._bc, this._bcOffset);
+  factory ListPositiveShort(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<ListPositiveShort> reader = _ListPositiveShortReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  List<int>? get val => const fb.ListReader<int>(fb.Uint16Reader()).vTableGetNullable(_bc, _bcOffset, 4);
+
+  @override
+  String toString() {
+    return 'ListPositiveShort{val: $val}';
+  }
+}
+
+class _ListPositiveShortReader extends fb.TableReader<ListPositiveShort> {
+  const _ListPositiveShortReader();
+
+  @override
+  ListPositiveShort createObject(fb.BufferContext bc, int offset) => 
+    ListPositiveShort._(bc, offset);
+}
+
+
+class ListPositiveShortObjectBuilder extends WrapperObjectBuilder {
+  final List<int>? _val;
+
+  ListPositiveShortObjectBuilder({
+    List<int>? val,
+  })
+      : _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    final int? valOffset = _val == null ? null
+        : fbBuilder.writeListUint16(_val);
     fbBuilder.startTable(1);
     fbBuilder.addOffset(0, valOffset);
     return fbBuilder.endTable();
@@ -371,6 +557,63 @@ class ListLongObjectBuilder extends WrapperObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     final int valOffset = fbBuilder.writeListInt64(_val);
+    fbBuilder.startTable(1);
+    fbBuilder.addOffset(0, valOffset);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
+
+class ListPositiveLong {
+  ListPositiveLong._(this._bc, this._bcOffset);
+  factory ListPositiveLong(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<ListPositiveLong> reader = _ListPositiveLongReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  List<int>? get val => const fb.ListReader<int>(fb.Uint64Reader()).vTableGetNullable(_bc, _bcOffset, 4);
+
+  @override
+  String toString() {
+    return 'ListPositiveLong{val: $val}';
+  }
+}
+
+class _ListPositiveLongReader extends fb.TableReader<ListPositiveLong> {
+  const _ListPositiveLongReader();
+
+  @override
+  ListPositiveLong createObject(fb.BufferContext bc, int offset) => 
+    ListPositiveLong._(bc, offset);
+}
+
+
+class ListPositiveLongObjectBuilder extends WrapperObjectBuilder {
+  final List<int>? _val;
+
+  ListPositiveLongObjectBuilder({
+    List<int>? val,
+  })
+      : _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    final int? valOffset = _val == null ? null
+        : fbBuilder.writeListUint64(_val);
     fbBuilder.startTable(1);
     fbBuilder.addOffset(0, valOffset);
     return fbBuilder.endTable();
@@ -681,49 +924,49 @@ class IntWrapperObjectBuilder extends WrapperObjectBuilder {
   }
 }
 
-class DoubleWrapper {
-  DoubleWrapper._(this._bc, this._bcOffset);
-  factory DoubleWrapper(List<int> bytes) {
+
+class PositiveIntWrapper {
+  PositiveIntWrapper._(this._bc, this._bcOffset);
+  factory PositiveIntWrapper(List<int> bytes) {
     final rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<DoubleWrapper> reader = _DoubleWrapperReader();
+  static const fb.Reader<PositiveIntWrapper> reader = _PositiveIntWrapperReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  double get val => const fb.Float64Reader().vTableGet(_bc, _bcOffset, 4, 0.0);
+  int get val => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
   @override
   String toString() {
-    return 'DoubleWrapper{val: $val}';
+    return 'PositiveIntWrapper{val: $val}';
   }
 }
 
-class _DoubleWrapperReader extends fb.TableReader<DoubleWrapper> {
-  const _DoubleWrapperReader();
+class _PositiveIntWrapperReader extends fb.TableReader<PositiveIntWrapper> {
+  const _PositiveIntWrapperReader();
 
   @override
-  DoubleWrapper createObject(fb.BufferContext bc, int offset) =>
-      DoubleWrapper._(bc, offset);
+  PositiveIntWrapper createObject(fb.BufferContext bc, int offset) => 
+    PositiveIntWrapper._(bc, offset);
 }
 
-class DoubleWrapperObjectBuilder extends WrapperObjectBuilder {
-  final double _val;
 
-  DoubleWrapperObjectBuilder({
-    required double val,
-  })  : assert(
-            val >= -1.7976931348623157e+308 && val <= 1.7976931348623157e+308,
-            'Value out of range for Double'),
-        _val = val;
+class PositiveIntWrapperObjectBuilder extends WrapperObjectBuilder {
+  final int? _val;
+
+  PositiveIntWrapperObjectBuilder({
+    int? val,
+  })
+      : _val = val;
 
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
     fbBuilder.startTable(1);
-    fbBuilder.addFloat64(0, _val);
+    fbBuilder.addUint32(0, _val);
     return fbBuilder.endTable();
   }
 
@@ -735,6 +978,334 @@ class DoubleWrapperObjectBuilder extends WrapperObjectBuilder {
     return fbBuilder.buffer;
   }
 }
+
+
+class ByteWrapper {
+  ByteWrapper._(this._bc, this._bcOffset);
+  factory ByteWrapper(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<ByteWrapper> reader = _ByteWrapperReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  int get val => const fb.Int8Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
+  @override
+  String toString() {
+    return 'ByteWrapper{val: $val}';
+  }
+}
+
+class _ByteWrapperReader extends fb.TableReader<ByteWrapper> {
+  const _ByteWrapperReader();
+
+  @override
+  ByteWrapper createObject(fb.BufferContext bc, int offset) =>
+      ByteWrapper._(bc, offset);
+}
+
+class ByteWrapperObjectBuilder extends WrapperObjectBuilder {
+  final int _val;
+
+  ByteWrapperObjectBuilder({
+    required int val,
+  })  : assert(val >= -128 && val <= 127, 'Value out of range for Int8'),
+        _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    fbBuilder.startTable(1);
+    fbBuilder.addInt8(0, _val);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
+class PositiveByteWrapper {
+  PositiveByteWrapper._(this._bc, this._bcOffset);
+  factory PositiveByteWrapper(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<PositiveByteWrapper> reader = _PositiveByteWrapperReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  int get val => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
+  @override
+  String toString() {
+    return 'PositiveByteWrapper{val: $val}';
+  }
+}
+
+class _PositiveByteWrapperReader extends fb.TableReader<PositiveByteWrapper> {
+  const _PositiveByteWrapperReader();
+
+  @override
+  PositiveByteWrapper createObject(fb.BufferContext bc, int offset) => 
+    PositiveByteWrapper._(bc, offset);
+}
+
+
+class PositiveByteWrapperObjectBuilder extends WrapperObjectBuilder {
+  final int? _val;
+
+  PositiveByteWrapperObjectBuilder({
+    int? val,
+  })
+      : _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    fbBuilder.startTable(1);
+    fbBuilder.addUint8(0, _val);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
+
+class ShortWrapper {
+  ShortWrapper._(this._bc, this._bcOffset);
+  factory ShortWrapper(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<ShortWrapper> reader = _ShortWrapperReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  int get val => const fb.Int16Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
+  @override
+  String toString() {
+    return 'ShortWrapper{val: $val}';
+  }
+}
+
+class _ShortWrapperReader extends fb.TableReader<ShortWrapper> {
+  const _ShortWrapperReader();
+
+  @override
+  ShortWrapper createObject(fb.BufferContext bc, int offset) =>
+      ShortWrapper._(bc, offset);
+}
+
+class ShortWrapperObjectBuilder extends WrapperObjectBuilder {
+  final int _val;
+
+  ShortWrapperObjectBuilder({
+    required int val,
+  })  : assert(val >= -32768 && val <= 32767, 'Value out of range for Short'),
+        _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    fbBuilder.startTable(1);
+    fbBuilder.addInt16(0, _val);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
+
+class PositiveShortWrapper {
+  PositiveShortWrapper._(this._bc, this._bcOffset);
+  factory PositiveShortWrapper(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<PositiveShortWrapper> reader = _PositiveShortWrapperReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  int get val => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
+  @override
+  String toString() {
+    return 'PositiveShortWrapper{val: $val}';
+  }
+}
+
+class _PositiveShortWrapperReader extends fb.TableReader<PositiveShortWrapper> {
+  const _PositiveShortWrapperReader();
+
+  @override
+  PositiveShortWrapper createObject(fb.BufferContext bc, int offset) => 
+    PositiveShortWrapper._(bc, offset);
+}
+
+
+class PositiveShortWrapperObjectBuilder extends WrapperObjectBuilder {
+  final int? _val;
+
+  PositiveShortWrapperObjectBuilder({
+    int? val,
+  })
+      : _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    fbBuilder.startTable(1);
+    fbBuilder.addUint16(0, _val);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
+
+class LongWrapper {
+  LongWrapper._(this._bc, this._bcOffset);
+  factory LongWrapper(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<LongWrapper> reader = _LongWrapperReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  int get val => const fb.Int64Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
+  @override
+  String toString() {
+    return 'LongWrapper{val: $val}';
+  }
+}
+
+class _LongWrapperReader extends fb.TableReader<LongWrapper> {
+  const _LongWrapperReader();
+
+  @override
+  LongWrapper createObject(fb.BufferContext bc, int offset) =>
+      LongWrapper._(bc, offset);
+}
+
+class LongWrapperObjectBuilder extends WrapperObjectBuilder {
+  final int _val;
+
+  LongWrapperObjectBuilder({
+    required int val,
+  })  : assert(val >= -9223372036854775808 && val <= 9223372036854775807,
+            'Value out of range for Long'),
+        _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    fbBuilder.startTable(1);
+    fbBuilder.addInt64(0, _val);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
+
+class PositiveLongWrapper {
+  PositiveLongWrapper._(this._bc, this._bcOffset);
+  factory PositiveLongWrapper(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<PositiveLongWrapper> reader = _PositiveLongWrapperReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  int get val => const fb.Uint64Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
+  @override
+  String toString() {
+    return 'PositiveLongWrapper{val: $val}';
+  }
+}
+
+class _PositiveLongWrapperReader extends fb.TableReader<PositiveLongWrapper> {
+  const _PositiveLongWrapperReader();
+
+  @override
+  PositiveLongWrapper createObject(fb.BufferContext bc, int offset) => 
+    PositiveLongWrapper._(bc, offset);
+}
+
+
+class PositiveLongWrapperObjectBuilder extends WrapperObjectBuilder {
+  final int? _val;
+
+  PositiveLongWrapperObjectBuilder({
+    int? val,
+  })
+      : _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    fbBuilder.startTable(1);
+    fbBuilder.addUint64(0, _val);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
 
 class FloatWrapper {
   FloatWrapper._(this._bc, this._bcOffset);
@@ -778,6 +1349,61 @@ class FloatWrapperObjectBuilder extends WrapperObjectBuilder {
   int finish(fb.Builder fbBuilder) {
     fbBuilder.startTable(1);
     fbBuilder.addFloat32(0, _val);
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String? fileIdentifier]) {
+    final fbBuilder = fb.Builder(deduplicateTables: false);
+    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
+    return fbBuilder.buffer;
+  }
+}
+
+class DoubleWrapper {
+  DoubleWrapper._(this._bc, this._bcOffset);
+  factory DoubleWrapper(List<int> bytes) {
+    final rootRef = fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<DoubleWrapper> reader = _DoubleWrapperReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  double get val => const fb.Float64Reader().vTableGet(_bc, _bcOffset, 4, 0.0);
+
+  @override
+  String toString() {
+    return 'DoubleWrapper{val: $val}';
+  }
+}
+
+class _DoubleWrapperReader extends fb.TableReader<DoubleWrapper> {
+  const _DoubleWrapperReader();
+
+  @override
+  DoubleWrapper createObject(fb.BufferContext bc, int offset) =>
+      DoubleWrapper._(bc, offset);
+}
+
+class DoubleWrapperObjectBuilder extends WrapperObjectBuilder {
+  final double _val;
+
+  DoubleWrapperObjectBuilder({
+    required double val,
+  })  : assert(
+            val >= -1.7976931348623157e+308 && val <= 1.7976931348623157e+308,
+            'Value out of range for Double'),
+        _val = val;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(fb.Builder fbBuilder) {
+    fbBuilder.startTable(1);
+    fbBuilder.addFloat64(0, _val);
     return fbBuilder.endTable();
   }
 
@@ -896,166 +1522,6 @@ class StringWrapperObjectBuilder extends WrapperObjectBuilder {
   }
 }
 
-class ByteWrapper {
-  ByteWrapper._(this._bc, this._bcOffset);
-  factory ByteWrapper(List<int> bytes) {
-    final rootRef = fb.BufferContext.fromBytes(bytes);
-    return reader.read(rootRef, 0);
-  }
-
-  static const fb.Reader<ByteWrapper> reader = _ByteWrapperReader();
-
-  final fb.BufferContext _bc;
-  final int _bcOffset;
-
-  int get val => const fb.Int8Reader().vTableGet(_bc, _bcOffset, 4, 0);
-
-  @override
-  String toString() {
-    return 'ByteWrapper{val: $val}';
-  }
-}
-
-class _ByteWrapperReader extends fb.TableReader<ByteWrapper> {
-  const _ByteWrapperReader();
-
-  @override
-  ByteWrapper createObject(fb.BufferContext bc, int offset) =>
-      ByteWrapper._(bc, offset);
-}
-
-class ByteWrapperObjectBuilder extends WrapperObjectBuilder {
-  final int _val;
-
-  ByteWrapperObjectBuilder({
-    required int val,
-  })  : assert(val >= -128 && val <= 127, 'Value out of range for Int8'),
-        _val = val;
-
-  /// Finish building, and store into the [fbBuilder].
-  @override
-  int finish(fb.Builder fbBuilder) {
-    fbBuilder.startTable(1);
-    fbBuilder.addInt8(0, _val);
-    return fbBuilder.endTable();
-  }
-
-  /// Convenience method to serialize to byte list.
-  @override
-  Uint8List toBytes([String? fileIdentifier]) {
-    final fbBuilder = fb.Builder(deduplicateTables: false);
-    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
-    return fbBuilder.buffer;
-  }
-}
-
-class LongWrapper {
-  LongWrapper._(this._bc, this._bcOffset);
-  factory LongWrapper(List<int> bytes) {
-    final rootRef = fb.BufferContext.fromBytes(bytes);
-    return reader.read(rootRef, 0);
-  }
-
-  static const fb.Reader<LongWrapper> reader = _LongWrapperReader();
-
-  final fb.BufferContext _bc;
-  final int _bcOffset;
-
-  int get val => const fb.Int64Reader().vTableGet(_bc, _bcOffset, 4, 0);
-
-  @override
-  String toString() {
-    return 'LongWrapper{val: $val}';
-  }
-}
-
-class _LongWrapperReader extends fb.TableReader<LongWrapper> {
-  const _LongWrapperReader();
-
-  @override
-  LongWrapper createObject(fb.BufferContext bc, int offset) =>
-      LongWrapper._(bc, offset);
-}
-
-class LongWrapperObjectBuilder extends WrapperObjectBuilder {
-  final int _val;
-
-  LongWrapperObjectBuilder({
-    required int val,
-  })  : assert(val >= -9223372036854775808 && val <= 9223372036854775807,
-            'Value out of range for Long'),
-        _val = val;
-
-  /// Finish building, and store into the [fbBuilder].
-  @override
-  int finish(fb.Builder fbBuilder) {
-    fbBuilder.startTable(1);
-    fbBuilder.addInt64(0, _val);
-    return fbBuilder.endTable();
-  }
-
-  /// Convenience method to serialize to byte list.
-  @override
-  Uint8List toBytes([String? fileIdentifier]) {
-    final fbBuilder = fb.Builder(deduplicateTables: false);
-    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
-    return fbBuilder.buffer;
-  }
-}
-
-class ShortWrapper {
-  ShortWrapper._(this._bc, this._bcOffset);
-  factory ShortWrapper(List<int> bytes) {
-    final rootRef = fb.BufferContext.fromBytes(bytes);
-    return reader.read(rootRef, 0);
-  }
-
-  static const fb.Reader<ShortWrapper> reader = _ShortWrapperReader();
-
-  final fb.BufferContext _bc;
-  final int _bcOffset;
-
-  int get val => const fb.Int16Reader().vTableGet(_bc, _bcOffset, 4, 0);
-
-  @override
-  String toString() {
-    return 'ShortWrapper{val: $val}';
-  }
-}
-
-class _ShortWrapperReader extends fb.TableReader<ShortWrapper> {
-  const _ShortWrapperReader();
-
-  @override
-  ShortWrapper createObject(fb.BufferContext bc, int offset) =>
-      ShortWrapper._(bc, offset);
-}
-
-class ShortWrapperObjectBuilder extends WrapperObjectBuilder {
-  final int _val;
-
-  ShortWrapperObjectBuilder({
-    required int val,
-  })  : assert(val >= -32768 && val <= 32767, 'Value out of range for Short'),
-        _val = val;
-
-  /// Finish building, and store into the [fbBuilder].
-  @override
-  int finish(fb.Builder fbBuilder) {
-    fbBuilder.startTable(1);
-    fbBuilder.addInt16(0, _val);
-    return fbBuilder.endTable();
-  }
-
-  /// Convenience method to serialize to byte list.
-  @override
-  Uint8List toBytes([String? fileIdentifier]) {
-    final fbBuilder = fb.Builder(deduplicateTables: false);
-    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
-    return fbBuilder.buffer;
-  }
-}
-
 class KeyValue {
   KeyValue._(this._bc, this._bcOffset);
   factory KeyValue(List<int> bytes) {
@@ -1072,44 +1538,34 @@ class KeyValue {
       const fb.StringReader().vTableGetNullable(_bc, _bcOffset, 4);
   AnyTypeId? get valType => AnyTypeId._createOrNull(
       const fb.Uint8Reader().vTableGetNullable(_bc, _bcOffset, 6));
-  dynamic get val {
+ dynamic get val {
     switch (valType?.value) {
-      case 1:
-        return ListString.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 2:
-        return ListInt.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 3:
-        return ListShort.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 4:
-        return ListLong.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 5:
-        return ListFloat.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 6:
-        return ListDouble.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 7:
-        return ListBool.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 8:
-        return ListByte.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 9:
-        return ComplexObject.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 10:
-        return IntWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 11:
-        return DoubleWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 12:
-        return BoolWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 13:
-        return StringWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 14:
-        return ByteWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 15:
-        return LongWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 16:
-        return ShortWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      case 17:
-        return FloatWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
-      default:
-        return null;
+      case 1: return ListString.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 2: return ListInt.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 3: return ListPositiveInt.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 4: return ListByte.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 5: return ListPositiveByte.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 6: return ListShort.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 7: return ListPositiveShort.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 8: return ListLong.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 9: return ListPositiveLong.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 10: return ListFloat.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 11: return ListDouble.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 12: return ListBool.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 13: return ComplexObject.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 14: return StringWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 15: return IntWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 16: return PositiveIntWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 17: return ByteWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 18: return PositiveByteWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 19: return ShortWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 20: return PositiveShortWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 21: return LongWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 22: return PositiveLongWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 23: return FloatWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 24: return DoubleWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      case 25: return BoolWrapper.reader.vTableGetNullable(_bc, _bcOffset, 8);
+      default: return null;
     }
   }
 

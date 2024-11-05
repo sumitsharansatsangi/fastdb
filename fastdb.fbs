@@ -6,16 +6,32 @@ table ListInt {
   val: [int];
 }
 
+table ListPositiveInt {
+  val: [uint];
+}
+
 table ListByte {
   val: [byte];
+}
+
+table ListPositiveByte {
+  val: [ubyte];
 }
 
 table ListShort {
   val: [short];
 }
 
+table ListPositiveShort {
+  val: [ushort];
+}
+
 table ListLong {
   val: [long];
+}
+
+table ListPositiveLong {
+  val: [ulong];
 }
 
 table ListFloat {
@@ -41,16 +57,33 @@ table IntWrapper {
   val: int;
 }
 
+table PositiveIntWrapper {
+  val: uint;
+}
+
+table ByteWrapper{
+  val:byte;
+}
+
+table PositiveByteWrapper{
+  val:ubyte;
+}
 
 table ShortWrapper {
   val: short;
 }
 
+table PositiveShortWrapper {
+  val: ushort;
+}
 
 table LongWrapper {
   val: long;
 }
 
+table PositiveLongWrapper {
+  val: ulong;
+}
 
 table DoubleWrapper {
   val: double;
@@ -68,29 +101,32 @@ table StringWrapper {
   val: string;
 }
 
-table ByteWrapper{
-  val:byte;
-}
-
-
 union Any {
   ListString: ListString,
   ListInt: ListInt,
+  ListPositiveInt: ListPositiveInt,
+  ListByte:ListByte,
+  ListPositiveByte:ListPositiveByte,
   ListShort:ListShort,
+  ListPositiveShort:ListPositiveShort,
   ListLong:ListLong,
+  ListPositiveLong:ListPositiveLong,
   ListFloat:ListFloat,
   ListDouble: ListDouble,
   ListBool: ListBool,
-  ListByte:ListByte,
   ComplexObject: ComplexObject,
+  StringWrapper: StringWrapper,
   IntWrapper: IntWrapper,
+  PositiveIntWrapper: PositiveIntWrapper,
+  ByteWrapper:ByteWrapper,
+  PositiveByteWrapper: PositiveByteWrapper,
+  ShortWrapper:ShortWrapper,
+  PositiveShortWrapper:PositiveShortWrapper,
+  LongWrapper:LongWrapper,
+  PositiveLongWrapper: PositiveLongWrapper,
+  FloatWrapper: FloatWrapper,
   DoubleWrapper: DoubleWrapper,
   BoolWrapper: BoolWrapper,
-  StringWrapper: StringWrapper,
-  ByteWrapper:ByteWrapper,
-  LongWrapper:LongWrapper,
-  ShortWrapper:ShortWrapper,
-  FloatWrapper: FloatWrapper,
 }
 
 table KeyValue {  
