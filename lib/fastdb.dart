@@ -655,6 +655,79 @@ class FastDB {
     }
   }
 
+ static Future<void> putLong(String key, int val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.LongWrapperObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.LongWrapper;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.LongWrapperObjectBuilder(val: val),
+          valType: db.AnyTypeId.LongWrapper));
+    }
+  }
+
+  static Future<void> putListLong(String key, List<int> val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.ListLongObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.ListLong;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.ListLongObjectBuilder(val: val),
+          valType: db.AnyTypeId.ListLong));
+    }
+  }
+
+   static Future<void> putPositiveLong(String key, int val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.PositiveLongWrapperObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.PositiveLongWrapper;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.PositiveLongWrapperObjectBuilder(val: val),
+          valType: db.AnyTypeId.PositiveLongWrapper));
+    }
+  }
+
+  static Future<void> putPositiveListLong(String key, List<int> val) async {
+    bool flag = true;
+    for (final k in keyValueLists) {
+      if (k.key == key) {
+        k.val = db.ListPositiveLongObjectBuilder(val: val);
+        k.valType = db.AnyTypeId.ListPositiveLong;
+        flag = false;
+        break;
+      }
+    }
+    if (flag) {
+      keyValueLists.add(db.KeyValueObjectBuilder(
+          key: key,
+          val: db.ListPositiveLongObjectBuilder(val: val),
+          valType: db.AnyTypeId.ListPositiveLong));
+    }
+  }
+
+
 
   static Future<void> putDouble(String key, double val) async {
     bool flag = true;
