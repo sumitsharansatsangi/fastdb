@@ -79,8 +79,8 @@ class MyAppState extends State<MyApp> {
   }
 
   Future<void> writeData() async {
-    await FastDB.putString('message', 'Give FastDB A Try!! 🎸🤘');
-    await FastDB.putString('username', 'john_doe');
+    FastDB.putString('message', 'Give FastDB A Try!! 🎸🤘');
+    FastDB.putString('username', 'john_doe');
     FastDB.putPositiveByte('age', 30);
     FastDB.putFloat('height', 5.9);
     FastDB.putBool('isAdmin', true);

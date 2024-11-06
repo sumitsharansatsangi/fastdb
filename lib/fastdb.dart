@@ -401,7 +401,7 @@ class FastDB {
     return null;
   }
 
-  static Future<void> putString(String key, String val) async {
+  static void putString(String key, String val) {
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -419,7 +419,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putListString(String key, List<String> val) async {
+  static void putListString(String key, List<String> val) {
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -437,7 +437,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putInt(String key, int val) async {
+  static void putInt(String key, int val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -455,7 +455,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putListInt(String key, List<int> val) async {
+  static void putListInt(String key, List<int> val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -473,7 +473,7 @@ class FastDB {
     }
   }
 
-   static Future<void> putPositiveInt(String key, int val) async {
+   static void putPositiveInt(String key, int val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -491,7 +491,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putPositiveListInt(String key, List<int> val) async {
+  static void putPositiveListInt(String key, List<int> val) {
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -510,7 +510,7 @@ class FastDB {
   }
 
 
-  static Future<void> putByte(String key, int val) async {
+  static void putByte(String key, int val) {
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -528,7 +528,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putListByte(String key, List<int> val) async {
+  static void putListByte(String key, List<int> val) {
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -546,7 +546,7 @@ class FastDB {
     }
   }
 
-   static Future<void> putPositiveByte(String key, int val) async {
+   static void putPositiveByte(String key, int val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -564,7 +564,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putPositiveListByte(String key, List<int> val) async {
+  static void putPositiveListByte(String key, List<int> val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -583,7 +583,7 @@ class FastDB {
   }
 
 
-  static Future<void> putShort(String key, int val) async {
+  static void putShort(String key, int val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -601,7 +601,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putListShort(String key, List<int> val) async {
+  static void putListShort(String key, List<int> val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -619,7 +619,7 @@ class FastDB {
     }
   }
 
-   static Future<void> putPositiveShort(String key, int val) async {
+   static void putPositiveShort(String key, int val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -637,7 +637,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putPositiveListShort(String key, List<int> val) async {
+  static void putPositiveListShort(String key, List<int> val) {
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -655,7 +655,7 @@ class FastDB {
     }
   }
 
- static Future<void> putLong(String key, int val) async {
+ static void putLong(String key, int val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -673,7 +673,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putListLong(String key, List<int> val) async {
+  static void putListLong(String key, List<int> val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -691,7 +691,7 @@ class FastDB {
     }
   }
 
-   static Future<void> putPositiveLong(String key, int val) async {
+   static void putPositiveLong(String key, int val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -709,7 +709,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putPositiveListLong(String key, List<int> val) async {
+  static void putPositiveListLong(String key, List<int> val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -729,7 +729,7 @@ class FastDB {
 
 
 
-  static Future<void> putDouble(String key, double val) async {
+  static void putDouble(String key, double val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -747,7 +747,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putListDouble(String key, List<double> val) async {
+  static void putListDouble(String key, List<double> val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -765,7 +765,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putFloat(String key, double val) async {
+  static void putFloat(String key, double val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -783,7 +783,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putListFloat(String key, List<double> val) async {
+  static void putListFloat(String key, List<double> val) {
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -801,7 +801,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putBool(String key, bool val) async {
+  static void putBool(String key, bool val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -819,7 +819,7 @@ class FastDB {
     }
   }
 
-  static Future<void> putListBool(String key, List<bool> val) async {
+  static void putListBool(String key, List<bool> val){
     bool flag = true;
     for (final k in keyValueLists) {
       if (k.key == key) {
@@ -837,7 +837,7 @@ class FastDB {
     }
   }
 
-  static Future<void> remove(String key) async {
+  static void remove(String key) {
     keyValueLists.removeWhere((item) => item.key == key);
   }
 
