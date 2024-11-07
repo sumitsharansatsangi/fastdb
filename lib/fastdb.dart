@@ -841,25 +841,21 @@ class FastDB {
     keyValueLists.removeWhere((item) => item.key == key);
   }
 
-  static void flush() {
-    scheduleMicrotask(() {
+  static Future<void> flush() async{
       final originalBytes =
           db.KeyValueListObjectBuilder(lists: keyValueLists).toBytes();
       if (originalBytes.isNotEmpty) {
-        _file.writeAsBytes(
+       await _file.writeAsBytes(
             Deflate(_encrypter.encryptBytes(originalBytes, iv: _iv).bytes)
                 .getBytes(),
             flush: true);
       }
-    });
   }
 
-  static void clearAll() {
-    scheduleMicrotask(() async {
+  static Future<void> clearAll()async{
       if (await _file.exists()) {
         await _file.delete();
       }
-    });
   }
 }
 
